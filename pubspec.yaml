@@ -1,0 +1,69 @@
+name: trustgreen
+description: "Trust Green Wallet — multi-chain crypto wallet (Flutter rebuild)."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # State management
+  flutter_riverpod: ^2.6.1
+
+  # Routing
+  go_router: ^14.6.2
+
+  # Storage
+  flutter_secure_storage: ^9.2.2
+  shared_preferences: ^2.3.3
+
+  # Network
+  dio: ^5.7.0
+
+  # Crypto / HD wallet
+  bip39: ^1.0.6
+  bip32: ^2.0.0
+  web3dart: ^2.7.3
+  crypto: ^3.0.6
+  convert: ^3.1.2
+  pointycastle: ^3.9.1
+
+  # Camera / scanning
+  mobile_scanner: ^6.0.7
+
+  # QR display
+  qr_flutter: ^4.1.0
+
+  # WebView (browser tab)
+  webview_flutter: ^4.10.0
+
+  # Charts (market tab)
+  fl_chart: ^0.69.2
+
+  # UX polish
+  flutter_animate: ^4.5.2
+  google_fonts: ^6.2.1
+
+  # Misc
+  intl: ^0.19.0
+  collection: ^1.18.0
+  url_launcher: ^6.3.1
+  flutter_dotenv: ^5.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/chains/
+    - .env
