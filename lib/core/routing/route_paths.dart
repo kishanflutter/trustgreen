@@ -22,6 +22,9 @@ class RoutePaths {
   static const String browser = '/browser';
   static const String settings = '/settings';
 
+  // Market sub-routes
+  static String marketCoin(String id) => '/market/coin/$id';
+
   // Wallet sub-routes (nested under /wallet)
   static const String walletReceive = '/wallet/receive';
   static const String walletSend = '/wallet/send';
@@ -35,6 +38,7 @@ class RoutePaths {
   static String walletCoin(String chainId) => '/wallet/coin/$chainId';
   static const String walletConfirmTx = '/wallet/confirm-tx';
   static const String walletConfirmSwap = '/wallet/confirm-swap';
+  static const String walletTxPending = '/wallet/tx-pending';
 
   // Settings sub-routes
   static const String settingsChains = '/settings/chains';

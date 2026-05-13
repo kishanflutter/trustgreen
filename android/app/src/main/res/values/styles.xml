@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- App is dark-only, so the day-mode launch theme also uses a black
-         background to avoid a white flash on cold start. -->
+    <!-- App is dark-only, so the day-mode launch theme uses the same
+         black background as night mode to avoid a white flash on
+         cold start of pre-Android-12 devices. The `windowBackground`
+         drawable is composed of `@drawable/background` (solid black)
+         plus the centered logo in `@drawable/splash`. -->
     <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowBackground">@drawable/launch_background</item>
+        <item name="android:forceDarkAllowed">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
+
+    <!-- Applied as soon as the Flutter process has started; remains
+         the window background for the duration of the app run. -->
     <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>

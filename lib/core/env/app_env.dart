@@ -52,4 +52,15 @@ class AppEnv {
   }
 
   static String get newsSection => _get('NEWS_SECTION', 'general');
+
+  /// Etherscan V2 API key. Optional — the free tier allows
+  /// 1 request / 5 seconds without a key.
+  static String? get etherscanApiKey {
+    final v = dotenv.maybeGet('ETHERSCAN_API_KEY');
+    return (v == null || v.isEmpty) ? null : v;
+  }
+
+  /// Default URL for the in-app browser. Falls back to CoinGecko.
+  static String get browserHomeUrl =>
+      _get('BROWSER_HOME_URL', 'https://www.coingecko.com');
 }

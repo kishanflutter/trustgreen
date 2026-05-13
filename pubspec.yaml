@@ -24,6 +24,9 @@ dependencies:
 
   # Network
   dio: ^5.7.0
+  # `http` is needed by web3dart's Web3Client constructor; pinned
+  # explicitly so the API surface we use is stable across upgrades.
+  http: ^1.2.2
 
   # Crypto / HD wallet
   bip39: ^1.0.6
@@ -55,10 +58,23 @@ dependencies:
   url_launcher: ^6.3.1
   flutter_dotenv: ^5.2.1
 
+  # Native splash plugin — used both as a CLI to generate assets and
+  # at runtime to preserve / remove the splash around bootstrap. Must
+  # live in regular `dependencies` (not dev_dependencies) because we
+  # import it from app code (see lib/main.dart, BootScreen).
+  flutter_native_splash: ^2.4.6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+
+  # CLI-only — generates Android / iOS launcher icons.
+  flutter_launcher_icons: ^0.14.4
+
+  # Used by `tool/build_brand_assets.dart` to pre-pad the logo for
+  # Android adaptive icons and the Android 12+ splash mask.
+  image: ^4.5.4
 
 flutter:
   uses-material-design: true
@@ -67,3 +83,41 @@ flutter:
     - assets/images/
     - assets/chains/
     - .env
+
+# ── Adaptive launcher icons ───────────────────────────────────────
+# Pre-Android-26 + iOS fall back to `image_path` (the un-padded
+# logo). Android 8+ uses the padded foreground on a solid black
+# background that matches `AppColors.bg`.
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/app_logo.png"
+  min_sdk_android: 23
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/images/app_logo_foreground.png"
+  background_color_ios: "#000000"
+  web:
+    generate: false
+  windows:
+    generate: false
+  macos:
+    generate: false
+
+# ── Native splash ─────────────────────────────────────────────────
+# Centered logo on the same #000000 background the Flutter UI uses,
+# so the handoff from splash → first frame is invisible.
+flutter_native_splash:
+  color: "#000000"
+  image: assets/images/app_logo_foreground.png
+  color_dark: "#000000"
+  image_dark: assets/images/app_logo_foreground.png
+  android: true
+  ios: true
+  web: false
+  fullscreen: false
+  android_12:
+    color: "#000000"
+    image: assets/images/app_logo_foreground.png
+    color_dark: "#000000"
+    image_dark: assets/images/app_logo_foreground.png

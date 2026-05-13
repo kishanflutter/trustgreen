@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/responsive/responsive.dart';
 import '../../core/routing/route_paths.dart';
 import '../../core/theme/tokens.dart';
 import '../../shared/widgets/primary_button.dart';
+import '../../state/onboarding_provider.dart';
+import '../../state/providers.dart';
+import '../../state/wallet_providers.dart';
 
-class SuccessScreen extends StatelessWidget {
+class SuccessScreen extends ConsumerWidget {
   const SuccessScreen({super.key});
 
   static const String _bgAsset = 'assets/images/wallet-success-circuit-bg.jpg';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: AppColors.bg,
       body: Stack(
@@ -97,7 +101,19 @@ class SuccessScreen extends StatelessWidget {
                     PrimaryButton(
                       label: 'Open wallet',
                       icon: Icons.arrow_forward_rounded,
-                      onPressed: () => context.go(RoutePaths.wallet),
+                      onPressed: () {
+                        // Belt-and-braces: clear any residual onboarding
+                        // state, refresh wallet caches, and make sure
+                        // the session is unlocked before entering the
+                        // main shell.
+                        ref.read(onboardingProvider.notifier).clear();
+                        ref.read(sessionProvider.notifier).unlock();
+                        ref.invalidate(hasAnyWalletProvider);
+                        ref.invalidate(walletsListProvider);
+                        ref.invalidate(activeWalletProvider);
+                        ref.invalidate(activeWalletIdProvider);
+                        context.go(RoutePaths.wallet);
+                      },
                     ),
                   ],
                 ),

@@ -24,6 +24,8 @@ class AppColors {
   static const Color borderFocus = Color(0xFF00E676);
 
   static const Color error = Color(0xFFFF5252);
+  static const Color warning = Color(0xFFFFB74D);
+  static const Color info = Color(0xFF42A5F5);
 
   static const Color qrBg = Color(0xFFFFFFFF);
   static const Color qrFg = Color(0xFF000000);

@@ -11,11 +11,16 @@ class ChainLogo extends StatelessWidget {
     required this.logoKey,
     this.size = 32,
     this.rounded = true,
+    this.fallbackIcon,
   });
 
   final String logoKey;
   final double size;
   final bool rounded;
+
+  /// Icon shown when the asset is missing. If `null`, the first
+  /// letter of [logoKey] is rendered instead.
+  final IconData? fallbackIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +37,19 @@ class ChainLogo extends StatelessWidget {
           shape: rounded ? BoxShape.circle : BoxShape.rectangle,
         ),
         alignment: Alignment.center,
-        child: Text(
-          logoKey.isEmpty ? '?' : logoKey[0].toUpperCase(),
-          style: const TextStyle(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        child: fallbackIcon != null
+            ? Icon(
+                fallbackIcon,
+                color: AppColors.primary,
+                size: size * 0.55,
+              )
+            : Text(
+                logoKey.isEmpty ? '?' : logoKey[0].toUpperCase(),
+                style: const TextStyle(
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
       ),
     );
 

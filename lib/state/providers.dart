@@ -1,34 +1,41 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/auth/pin_service.dart';
 import '../data/storage/secure_storage.dart';
+import '../data/wallet/wallet_repository.dart';
 
 // ── Core singletons ───────────────────────────────────────────────
 final secureStorageProvider = Provider<SecureStorage>(
   (ref) => SecureStorage(),
 );
 
+final pinServiceProvider = Provider<PinService>(
+  (ref) => PinService(ref.watch(secureStorageProvider)),
+);
+
+final walletRepositoryProvider = Provider<WalletRepository>(
+  (ref) => WalletRepository(ref.watch(secureStorageProvider)),
+);
+
 // ── Onboarding readiness ──────────────────────────────────────────
-/// `true` when the local stores have hydrated and the app can make
-/// routing decisions. Phase-1 stub: always immediately ready.
-final appBootProvider = FutureProvider<void>((ref) async {
-  // Hook here later to await preference / wallet hydration.
-});
+/// Hook for any future hydration step (DB warm-up, migrations).
+/// Currently returns immediately so the BootController routes on
+/// the next frame.
+final appBootProvider = FutureProvider<void>((ref) async {});
 
-/// `true` if a PIN has been set up. Re-read on demand by the router
-/// redirect guard.
+/// `true` if a PIN has been set. Read by [BootController] and after
+/// every onboarding mutation via `ref.invalidate`.
 final hasPinProvider = FutureProvider<bool>((ref) {
-  return ref.watch(secureStorageProvider).hasPin();
+  return ref.watch(pinServiceProvider).hasPin();
 });
 
-/// `true` if at least one wallet exists in secure storage.
+/// `true` if at least one wallet exists. Invalidated after wallet
+/// creation / deletion.
 final hasAnyWalletProvider = FutureProvider<bool>((ref) {
   return ref.watch(secureStorageProvider).hasAnyWallet();
 });
 
 // ── Session ───────────────────────────────────────────────────────
-/// In-memory unlock flag. The Expo source persists `lockAfterMinutes`
-/// but `unlocked` is intentionally non-persisted so a cold start
-/// always re-prompts for the PIN.
 class SessionState {
   const SessionState({this.unlocked = false, this.lastUnlockAt});
 

@@ -15,8 +15,13 @@ import '../../features/news/news_screen.dart';
 import '../../features/settings/settings_index_screen.dart';
 import '../../features/settings/settings_stub_screens.dart';
 import '../../features/shell/main_shell.dart';
+import '../../features/wallet/history_screen.dart';
+import '../../features/wallet/receive_screen.dart';
+import '../../features/wallet/send_screen.dart';
+import '../../features/wallet/tx_pending_screen.dart';
 import '../../features/wallet/wallet_dashboard_screen.dart';
 import '../../features/wallet/wallet_stub_screens.dart';
+import '../../features/market/coin_detail_screen.dart';
 import 'route_paths.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -83,7 +88,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   ),
                   GoRoute(
                     path: 'send',
-                    builder: (context, state) => const SendScreen(),
+                    builder: (context, state) => SendScreen(
+                      initialRecipient:
+                          state.uri.queryParameters['recipient'],
+                    ),
                   ),
                   GoRoute(
                     path: 'swap',
@@ -121,6 +129,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     path: 'confirm-swap',
                     builder: (context, state) => const ConfirmSwapScreen(),
                   ),
+                  GoRoute(
+                    path: 'tx-pending',
+                    builder: (context, state) => TxPendingScreen(
+                      txHash: state.uri.queryParameters['hash'] ?? '',
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -133,6 +147,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: RoutePaths.market,
                 builder: (context, state) => const MarketScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'coin/:id',
+                    builder: (context, state) => CoinDetailScreen(
+                      coinId: state.pathParameters['id'] ?? '',
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

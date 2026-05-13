@@ -18,8 +18,11 @@ pluginManagement {
 
 plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
-    id("com.android.application") version "8.7.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.22" apply false
+    // AGP 8.7.3 — current stable for Gradle 8.10.x.
+    id("com.android.application") version "8.7.3" apply false
+    // Kotlin 2.1.20 — required by mobile_scanner 6.x and webview_flutter
+    // plugins that ship with Kotlin 2.1 metadata.
+    id("org.jetbrains.kotlin.android") version "2.1.20" apply false
 }
 
 include(":app")
